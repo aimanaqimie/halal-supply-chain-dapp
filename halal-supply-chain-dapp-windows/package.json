@@ -1,0 +1,32 @@
+{
+  "name": "halal-supply-chain-dapp",
+  "version": "1.0.0",
+  "description": "Blockchain-based Halal Supply Chain Tracking System",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "test:gas": "REPORT_GAS=true hardhat test",
+    "compile": "hardhat compile",
+    "node": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "clean": "hardhat clean",
+    "help": "hardhat help"
+  },
+  "keywords": ["blockchain", "ethereum", "halal", "supply-chain", "dapp", "web3"],
+  "author": "NexaChain - Aiman, Hasanul, Uzair",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "chai": "^4.5.0",
+    "ethers": "^6.16.0",
+    "hardhat": "^2.28.3",
+    "hardhat-gas-reporter": "^2.3.0",
+    "solidity-coverage": "^0.8.17"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}

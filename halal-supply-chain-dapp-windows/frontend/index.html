@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halal Supply Chain Tracking dApp</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>🕌 Halal Supply Chain Tracking</h1>
+            <div class="header-right">
+                <button id="connectButton" class="btn btn-primary">Connect Wallet</button>
+                <div id="accountInfo" style="display: none;">
+                    <p>Account: <span id="currentAccount"></span></p>
+                    <p>Role: <span id="currentRole"></span></p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Message Display -->
+    <div id="message" class="message" style="display: none;"></div>
+
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="dashboard" style="display: none;">
+            <h2>Admin Dashboard</h2>
+            <div class="card">
+                <h3>Register New User</h3>
+                <form id="registerUserForm">
+                    <div class="form-group">
+                        <label>User Address:</label>
+                        <input type="text" id="userAddress" required placeholder="0x...">
+                    </div>
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" id="userName" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Role:</label>
+                        <select id="userRole" required>
+                            <option value="2">Farmer</option>
+                            <option value="3">Slaughterhouse</option>
+                            <option value="4">Processor</option>
+                            <option value="5">Distributor</option>
+                            <option value="6">Retailer</option>
+                            <option value="7">JAKIM</option>
+                            <option value="8">Consumer</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register User</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Farmer Dashboard -->
+        <div id="farmerDashboard" class="dashboard" style="display: none;">
+            <h2>Farmer Dashboard</h2>
+            <div class="card">
+                <h3>Create New Batch</h3>
+                <form id="createBatchForm">
+                    <div class="form-group">
+                        <label>Animal Type:</label>
+                        <input type="text" id="animalType" required placeholder="e.g., Chicken, Cattle, Goat">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity:</label>
+                        <input type="number" id="quantity" required min="1" placeholder="100">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Batch</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>My Batches</h3>
+                <div id="myBatchesList" class="batches-list"></div>
+            </div>
+        </div>
+
+        <!-- Slaughterhouse Dashboard -->
+        <div id="slaughterhouseDashboard" class="dashboard" style="display: none;">
+            <h2>Slaughterhouse Dashboard</h2>
+            <div class="card">
+                <h3>Update Batch Status</h3>
+                <form id="updateStatusForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="batchIdStatus" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mark as Slaughtered</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Request Halal Certification</h3>
+                <form id="requestCertForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="batchIdCert" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-success">Request Certification</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Processor Dashboard -->
+        <div id="processorDashboard" class="dashboard" style="display: none;">
+            <h2>Processor Dashboard</h2>
+            <div class="card">
+                <h3>Process Batch</h3>
+                <form id="processBatchForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="processBatchId" required min="1">
+                    </div>
+                    <p class="info">Note: Batch must have approved Halal certification</p>
+                    <button type="submit" class="btn btn-primary">Process Batch</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Distributor Dashboard -->
+        <div id="distributorDashboard" class="dashboard" style="display: none;">
+            <h2>Distributor Dashboard</h2>
+            <div class="card">
+                <h3>Ship Batch</h3>
+                <form id="shipBatchForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="shipBatchId" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ship Batch</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Retailer Dashboard -->
+        <div id="retailerDashboard" class="dashboard" style="display: none;">
+            <h2>Retailer Dashboard</h2>
+            <div class="card">
+                <h3>Receive Batch</h3>
+                <form id="receiveBatchForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="receiveBatchId" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Receive Batch</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Sell Batch</h3>
+                <form id="sellBatchForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="sellBatchId" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-success">Mark as Sold</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- JAKIM Dashboard -->
+        <div id="jakimDashboard" class="dashboard" style="display: none;">
+            <h2>JAKIM Dashboard</h2>
+            <div class="card">
+                <h3>Pending Certifications</h3>
+                <div id="pendingCertsList"></div>
+            </div>
+            <div class="card">
+                <h3>Approve Certificate</h3>
+                <form id="approveCertForm">
+                    <div class="form-group">
+                        <label>Certificate ID:</label>
+                        <input type="number" id="approveCertId" required min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Comments:</label>
+                        <textarea id="approveComments" required placeholder="All requirements met"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Reject Certificate</h3>
+                <form id="rejectCertForm">
+                    <div class="form-group">
+                        <label>Certificate ID:</label>
+                        <input type="number" id="rejectCertId" required min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Reason:</label>
+                        <textarea id="rejectReason" required placeholder="Missing documentation"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Reject</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Consumer Dashboard -->
+        <div id="consumerDashboard" class="dashboard" style="display: none;">
+            <h2>Consumer Dashboard</h2>
+            <div class="card">
+                <h3>Track Product</h3>
+                <form id="trackBatchForm">
+                    <div class="form-group">
+                        <label>Batch ID:</label>
+                        <input type="number" id="trackBatchId" required min="1" placeholder="Enter batch ID">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Track Batch</button>
+                </form>
+            </div>
+            <div id="batchInfo" style="display: none;"></div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Halal Supply Chain Tracking dApp | CSCI 4312 Project</p>
+            <p>Developed by: NexaChain Team</p>
+        </div>
+    </footer>
+
+    <!-- Load Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
